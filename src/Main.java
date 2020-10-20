@@ -17,7 +17,7 @@ class Main {
         try {
             LexicalScanner lexicalScanner = new LexicalScanner();
             resetFiles();
-            lexicalScanner.scan("p1.txt");
+            lexicalScanner.scan("p2.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -125,14 +125,17 @@ public class LexicalScanner {
                                             errorFound = true;
                                             System.out.println("Invalid number -0 at line " + lineNumber + ".");
                                         } else {
-                                            number = "-";
+                                            if(Character.toString(data.charAt(i + 1)).equals("="))
+                                                number = "-";
                                         }
                                     }
                                 }
                             } else {
                                 if (!codes.containsKey(Character.toString(current))) {
+                                    System.out.println(codes);
+                                    System.out.println(current);
                                     errorFound = true;
-                                    System.out.println("Illegal character at line " + lineNumber + ".");
+                                    System.out.println("Illegal character "+current+" at line " + lineNumber + ".");
                                 } else {
                                     symbol += current;
                                     if (i + 1 < data.length()) {
