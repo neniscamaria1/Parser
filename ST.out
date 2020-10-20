@@ -1,10 +1,10 @@
 Data structure used: hash table with separate chaining.
-8 : 0
 17 : a
-9 : 1
-18 : The number is prime? 
-10 : 2
+18 : b
+19 : c
+1 : b= 
+16 : max
 0 : a= 
-5 : i
-19 : ;
-17 : isPrime
+2 : c= 
+10 : -7
+Lexical error found at line 20.

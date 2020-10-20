@@ -1,5 +1,5 @@
 main{
-    number a, b, c, max=0_
+    number a, b, c, max=-7_
     display("a= ")_
     userInput(a)_
     display("b= ")_

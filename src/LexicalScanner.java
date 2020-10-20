@@ -22,8 +22,9 @@ public class LexicalScanner {
             Scanner myReader = new Scanner(file);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                ArrayList<String> words = new ArrayList<>(Arrays.asList(data.split(" : ")));
-                words = (ArrayList<String>) words.stream().map(String::trim).collect(Collectors.toList());
+                ArrayList<String> words = Arrays.stream(data.split(" : "))
+                        .map(String::trim)
+                        .collect(Collectors.toCollection(ArrayList::new));
                 codes.put(words.get(0), Integer.parseInt(words.get(1)));
             }
             myReader.close();
@@ -41,18 +42,19 @@ public class LexicalScanner {
         printWriter.close();
     }
 
-    private void writeSTToFile() throws IOException {
+    private void writeSTToFile(boolean errorFound, int line) throws IOException {
+        FileWriter fileWriter = new FileWriter("ST.out", true);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
         tokensFromST.forEach(token -> {
-            FileWriter fileWriter = null;
-            try {
-                fileWriter = new FileWriter("ST.out", true);
-                PrintWriter printWriter = new PrintWriter(fileWriter);
-                printWriter.println(symbolTable.findElement(token) + " : " + token );
-                printWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            printWriter.println(symbolTable.findElement(token) + " : " + token);
+
         });
+
+        if (errorFound)
+            printWriter.println("Lexical error found at line " + line + ".");
+        else
+            printWriter.println("Lexically correct!");
+        printWriter.close();
     }
 
     private void addTokenToTables(String token, boolean isConstantString) throws IOException {
@@ -61,7 +63,7 @@ public class LexicalScanner {
         } else {
             tokensFromST.add(token);
             symbolTable.add(token);
-            if(isConstantString)
+            if (isConstantString)
                 addToPIF(codes.get("constant"), symbolTable.findElement(token));
             else
                 addToPIF(codes.get("identifier"), symbolTable.findElement(token));
@@ -71,80 +73,93 @@ public class LexicalScanner {
     public void scan(String fileName) throws IOException {
         int lineNumber = 1;
         boolean errorFound = false;
-        try {
-            File myObj = new File(fileName);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine() && !errorFound) {
-                String data = myReader.nextLine();
-                String word = "", number = "", symbol = "", constantString = "";
-                boolean quotesFound = false, idOrConstFound = false;
-                for (int i = 0; i < data.length(); i++) {
-                    char current = data.charAt(i);
-                    if (Character.toString(current).equals("\"")) {
-                        quotesFound = !quotesFound;
-                        if (!quotesFound) {//a constant string was found
-                            addTokenToTables(constantString, true);
-                            constantString = "";
-                        }
-                    }
 
-                    if (quotesFound && !Character.toString(current).equals("\""))//keep adding to the constant string
-                        constantString += current;
-                    else {
-                        if (Character.isAlphabetic(current)) {
-                            if (!number.equals("")) {
-                                System.out.println("Invalid identifier or constant at line " + lineNumber + ".");
-                                i = data.length() + 2;
-                                errorFound = true;
-                            } else {
-                                idOrConstFound = true;
-                                word += current;
-                            }
-                        } else if (Character.isDigit(current)) {
-                            if (idOrConstFound)
-                                word += current;
-                            else
-                                number += current;
+        File myObj = new File(fileName);
+        Scanner myReader = new Scanner(myObj);
+        while (myReader.hasNextLine() && !errorFound) {
+            String data = myReader.nextLine();
+            String word = "", number = "", symbol = "", constantString = "";
+            boolean quotesFound = false, idOrConstFound = false, isNegative = false;
+            for (int i = 0; i < data.length(); i++) {
+                char current = data.charAt(i);
+                if (Character.toString(current).equals("\"")) {
+                    quotesFound = !quotesFound;
+                    if (!quotesFound) {//a constant string was found
+                        addTokenToTables(constantString, true);
+                        constantString = "";
+                    }
+                }
+
+                if (quotesFound && !Character.toString(current).equals("\""))//keep adding to the constant string
+                    constantString += current;
+                else {
+                    if (Character.isAlphabetic(current)) {
+                        if (!number.equals("")) {
+                            System.out.println("Invalid identifier or constant at line " + lineNumber + ".");
+                            i = data.length() + 2;
+                            errorFound = true;
                         } else {
-                            idOrConstFound = false;
-                            if (!word.equals("")) {
-                                addTokenToTables(word, false);
-                                word = "";
-                            }
-                            if (!number.equals("")) {
-                                addTokenToTables(number, false);
-                                number = "";
-                            }
-                            if (!Character.isWhitespace(current)) {
-                                symbol += current;
+                            idOrConstFound = true;
+                            word += current;
+                        }
+                    } else if (Character.isDigit(current)) {
+                        if (idOrConstFound)
+                            word += current;
+                        else
+                            number += current;
+                    } else {
+                        idOrConstFound = false;
+                        if (!word.equals("")) {
+                            addTokenToTables(word, false);
+                            word = "";
+                        }
+                        if (!number.equals("")) {
+                            addTokenToTables(number, false);
+                            number = "";
+                        }
+                        if (!Character.isWhitespace(current)) {
+                            if (Character.toString(current).equals("-")) {
                                 if (i + 1 < data.length()) {
-                                    if (Character.toString(data.charAt(i + 1)).equals("=")) {
-                                        symbol += data.charAt(i + 1);
-                                        i++;
+                                    if (Character.isDigit(data.charAt(i + 1))) {
+                                        if (Integer.parseInt(Character.toString(data.charAt(i + 1))) == 0) {
+                                            errorFound = true;
+                                            System.out.println("Invalid number -0 at line " + lineNumber + ".");
+                                        } else {
+                                            number = "-";
+                                        }
                                     }
                                 }
-                                addTokenToTables(symbol, false);
-                                symbol = "";
+                            } else {
+                                if (!codes.containsKey(Character.toString(current))) {
+                                    errorFound = true;
+                                    System.out.println("Illegal character at line " + lineNumber + ".");
+                                } else {
+                                    symbol += current;
+                                    if (i + 1 < data.length()) {
+                                        if (Character.toString(data.charAt(i + 1)).equals("=")) {
+                                            symbol += data.charAt(i + 1);
+                                            i++;
+                                        }
+                                    }
+                                    addTokenToTables(symbol, false);
+                                    symbol = "";
+                                }
                             }
-
-
                         }
                     }
                 }
-                if (quotesFound) {
-                    System.out.println("Invalid constant string at line " + lineNumber + ".");
-                    errorFound = true;
-                }
-                lineNumber++;
             }
-            myReader.close();
-            writeSTToFile();
-            if(!errorFound)
-                System.out.println("Lexically correct!");
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            if (quotesFound) {
+                System.out.println("Invalid constant string at line " + lineNumber + ".");
+                errorFound = true;
+            }
+            lineNumber++;
         }
+        myReader.close();
+        if (!errorFound)
+            System.out.println("Lexically correct!");
+        writeSTToFile(errorFound, lineNumber - 1);
+
     }
 }
 
