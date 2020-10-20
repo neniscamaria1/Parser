@@ -79,7 +79,7 @@ public class LexicalScanner {
         while (myReader.hasNextLine() && !errorFound) {
             String data = myReader.nextLine();
             String word = "", number = "", symbol = "", constantString = "";
-            boolean quotesFound = false, idOrConstFound = false, isNegative = false;
+            boolean quotesFound = false, idOrConstFound = false;
             for (int i = 0; i < data.length(); i++) {
                 char current = data.charAt(i);
                 if (Character.toString(current).equals("\"")) {
