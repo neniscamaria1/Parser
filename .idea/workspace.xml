@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="618a9f83-e7f3-40b4-8f3d-04a692181dcb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PIF.out" beforeDir="false" afterPath="$PROJECT_DIR$/PIF.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ST.out" beforeDir="false" afterPath="$PROJECT_DIR$/ST.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/p2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/p2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LexicalScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LexicalScanner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/token.in" beforeDir="false" afterPath="$PROJECT_DIR$/token.in" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +85,7 @@
       <workItem from="1602847860203" duration="28000" />
       <workItem from="1602928911971" duration="157000" />
       <workItem from="1602933043394" duration="28000" />
-      <workItem from="1603196459064" duration="15704000" />
+      <workItem from="1603196459064" duration="15727000" />
     </task>
     <servers />
   </component>
