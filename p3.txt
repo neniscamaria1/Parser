@@ -1,0 +1,9 @@
+main{
+    number size1=5, i=0, sum=0_
+    numbers array=[1,2,3,4,5]_
+    loop(i;i<size1;i+1){
+        sum+=array[i]_
+    }
+    display("The sum is: ")_
+    display(sum)_
+}

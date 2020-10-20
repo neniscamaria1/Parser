@@ -1,0 +1,22 @@
+main{
+    number a, b, c, max=0_
+    display("a= ")_
+    userInput(a)_
+    display("b= ")_
+    userInput(b)_
+    display("c= ")_
+    userInput(c)_
+    check(a>b and a>c){
+        max=a_
+    }
+    fail{
+        check(b>a and b>c){
+        max=b_
+        }
+        fail{
+            max=c_
+        }
+    }
+    display("Biggest number is: ")_
+    display(max)_
+}

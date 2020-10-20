@@ -1,0 +1,13 @@
+main{
+    number a,5i=0_
+    display("a= ")_
+    userInput(a)_
+    truth isPrime=True _
+    loop(5i; 5i<a/2 and isPrime; 5i+1){
+        check(a % 5i){
+            isPrime=False_
+        }
+    }
+    display("The number is prime?)_
+    display(isPrime)_
+}
