@@ -1,9 +1,10 @@
 main{
     number a,i=0_
+    number c=-1,0_
+    number d=+2_
     display("a= ")_
     userInput(a)_
     truth isPrime=True_
-    a=2-3_
     loop(i; i<a/2 and isPrime; i=1){
         check(a%i == 0){
             isPrime=False_

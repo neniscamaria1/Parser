@@ -113,9 +113,14 @@ public class LexicalScanner {
                             addTokenToTables(word, false);
                             word = "";
                         }
-                        if (!number.equals("")) {
-                            addTokenToTables(number, false);
-                            number = "";
+                        if(Character.toString(current).equals(",")){
+                            if(!number.equals(""))
+                                number+=",";
+                        }else {
+                            if (!number.equals("")) {
+                                addTokenToTables(number, false);
+                                number = "";
+                            }
                         }
                         if (!Character.isWhitespace(current)) {
                             if (Character.toString(current).equals("-")) {
@@ -125,27 +130,41 @@ public class LexicalScanner {
                                             errorFound = true;
                                             System.out.println("Invalid number -0 at line " + lineNumber + ".");
                                         } else {
-                                            if(Character.toString(data.charAt(i + 1)).equals("="))
+                                            if(Character.toString(data.charAt(i - 1)).equals("="))
                                                 number = "-";
                                         }
                                     }
                                 }
                             } else {
-                                if (!codes.containsKey(Character.toString(current))) {
-                                    System.out.println(codes);
-                                    System.out.println(current);
-                                    errorFound = true;
-                                    System.out.println("Illegal character "+current+" at line " + lineNumber + ".");
-                                } else {
-                                    symbol += current;
+                                if (Character.toString(current).equals("+")) {
                                     if (i + 1 < data.length()) {
-                                        if (Character.toString(data.charAt(i + 1)).equals("=")) {
-                                            symbol += data.charAt(i + 1);
-                                            i++;
+                                        if (Character.isDigit(data.charAt(i + 1))) {
+                                            if (Integer.parseInt(Character.toString(data.charAt(i + 1))) == 0) {
+                                                errorFound = true;
+                                                System.out.println("Invalid number +0 at line " + lineNumber + ".");
+                                            } else {
+                                                if (Character.toString(data.charAt(i - 1)).equals("="))
+                                                    number = "+";
+                                            }
                                         }
                                     }
-                                    addTokenToTables(symbol, false);
-                                    symbol = "";
+                                }else {
+                                    if (!codes.containsKey(Character.toString(current))) {
+                                        System.out.println(codes);
+                                        System.out.println(current);
+                                        errorFound = true;
+                                        System.out.println("Illegal character " + current + " at line " + lineNumber + ".");
+                                    } else {
+                                        symbol += current;
+                                        if (i + 1 < data.length()) {
+                                            if (Character.toString(data.charAt(i + 1)).equals("=")) {
+                                                symbol += data.charAt(i + 1);
+                                                i++;
+                                            }
+                                        }
+                                        addTokenToTables(symbol, false);
+                                        symbol = "";
+                                    }
                                 }
                             }
                         }

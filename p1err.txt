@@ -3,8 +3,8 @@ main{
     display("a= ")_
     userInput(a)_
     truth isPrime=True _
-    loop(5i; 5i<a/2 and isPrime; 5i+1){
-        check(a % 5i){
+    loop(i; i<a/2 and isPrime; i+1){
+        check(a % i){
             isPrime=False_
         }
     }
