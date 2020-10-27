@@ -135,6 +135,10 @@ public class LexicalScanner {
                                                 number = "-";
                                         }
                                     }
+                                    if(Character.toString(data.charAt(i + 1)).equals("=")){
+                                        errorFound = true;
+                                        System.out.println("Invalid operator -= at line " + lineNumber + ".");
+                                    }
                                 }
                             } else {
                                 if (Character.toString(current).equals("+")) {
@@ -147,6 +151,10 @@ public class LexicalScanner {
                                                 if (Character.toString(data.charAt(i - 1)).equals("="))
                                                     number = "+";
                                             }
+                                        }
+                                        if(Character.toString(data.charAt(i + 1)).equals("=")){
+                                            errorFound = true;
+                                            System.out.println("Invalid operator += at line " + lineNumber + ".");
                                         }
                                     }
                                 }else {
