@@ -162,21 +162,36 @@ public class LexicalScanner {
                                         }
                                     }
                                 }else {
-                                    if (!codes.containsKey(Character.toString(current))) {
-                                        System.out.println(codes);
-                                        System.out.println(current);
-                                        errorFound = true;
-                                        System.out.println("Illegal character " + current + " at line " + lineNumber + ".");
-                                    } else {
-                                        symbol += current;
-                                        if (i + 1 < data.length()) {
-                                            if (Character.toString(data.charAt(i + 1)).equals("=")) {
-                                                symbol += data.charAt(i + 1);
-                                                i++;
+                                    if(Character.toString(current).equals(".")){
+                                        if(i+2 < data.length()){
+                                            if(Character.toString(data.charAt(i+1)).equals(".") && Character.toString(data.charAt(i+2)).equals(".")){
+                                                symbol="...";
+                                                addTokenToTables(symbol, false);
+                                                symbol = "";
+                                                i+=2;
+                                            }else{
+                                                System.out.println("Illegal character at line "+lineNumber);
+                                                errorFound = true;
                                             }
+                                        }else{
+                                            System.out.println("Illegal character at line "+lineNumber);
+                                            errorFound = true;
                                         }
-                                        addTokenToTables(symbol, false);
-                                        symbol = "";
+                                    }else {
+                                        if (!codes.containsKey(Character.toString(current))) {
+                                            errorFound = true;
+                                            System.out.println("Illegal character " + current + " at line " + lineNumber + ".");
+                                        } else {
+                                            symbol += current;
+                                            if (i + 1 < data.length()) {
+                                                if (Character.toString(data.charAt(i + 1)).equals("=")) {
+                                                    symbol += data.charAt(i + 1);
+                                                    i++;
+                                                }
+                                            }
+                                            addTokenToTables(symbol, false);
+                                            symbol = "";
+                                        }
                                     }
                                 }
                             }

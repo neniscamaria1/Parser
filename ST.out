@@ -1,14 +1,11 @@
 Data structure used: hash table with separate chaining.
-8 : 0
 17 : a
-9 : 1
-10 : 2
+18 : b
 19 : c
-0 : d
-3 : +2
-5 : i
-18 : "The number is prime? "
+19 : "b= "
+10 : "c= "
+16 : max
+18 : "Biggest number is: "
+15 : 7
 8 : "a= "
-16 : -1,0
-17 : isPrime
 Lexically correct!
