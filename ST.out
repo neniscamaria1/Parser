@@ -1,12 +1,14 @@
 Data structure used: hash table with separate chaining.
 8 : 0
 17 : a
+9 : 1
+10 : 2
 19 : c
-19 : Prime
 0 : d
 3 : +2
 5 : i
-10 : is
+18 : "The number is prime? "
 8 : "a= "
 16 : -1,0
-Lexical error found at line 7.
+17 : isPrime
+Lexically correct!

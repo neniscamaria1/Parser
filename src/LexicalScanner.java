@@ -133,11 +133,13 @@ public class LexicalScanner {
                                         } else {
                                             if(Character.toString(data.charAt(i - 1)).equals("="))
                                                 number = "-";
+                                            else{
+                                                symbol+=current;
+                                                System.out.println(symbol);
+                                                addTokenToTables(symbol, false);
+                                                symbol = "";
+                                            }
                                         }
-                                    }
-                                    if(Character.toString(data.charAt(i + 1)).equals("=")){
-                                        errorFound = true;
-                                        System.out.println("Invalid operator -= at line " + lineNumber + ".");
                                     }
                                 }
                             } else {
@@ -150,11 +152,13 @@ public class LexicalScanner {
                                             } else {
                                                 if (Character.toString(data.charAt(i - 1)).equals("="))
                                                     number = "+";
+                                                else{
+                                                    symbol+=current;
+                                                    System.out.println(symbol);
+                                                    addTokenToTables(symbol, false);
+                                                    symbol = "";
+                                                }
                                             }
-                                        }
-                                        if(Character.toString(data.charAt(i + 1)).equals("=")){
-                                            errorFound = true;
-                                            System.out.println("Invalid operator += at line " + lineNumber + ".");
                                         }
                                     }
                                 }else {
