@@ -6,6 +6,6 @@ Data structure used: hash table with separate chaining.
 10 : "c= "
 16 : max
 18 : "Biggest number is: "
-15 : 7
+10 : -7
 8 : "a= "
 Lexically correct!

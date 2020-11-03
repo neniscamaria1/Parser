@@ -16,7 +16,7 @@ class Main {
     }
 
     private static void showMenu(){
-        System.out.println("Choose one of the following:");
+        System.out.println("Choose one of the following for the FA for identifiers:");
         System.out.println("1.Show set of states");
         System.out.println("2.Show alphabet");
         System.out.println("3.Show initial state");
@@ -27,14 +27,17 @@ class Main {
     }
 
     public static void main(String[] args){
+
+        FA fa_id = new FA("FA_id.in");
+        FA fa_const_number = new FA("Fa_const_number.in");
         try {
-            LexicalScanner lexicalScanner = new LexicalScanner();
+            LexicalScanner lexicalScanner = new LexicalScanner(fa_id, fa_const_number);
             resetFiles();
             lexicalScanner.scan("p1.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        FA fa_id = new FA("FA_id.in");
+
         boolean finished = false;
         Scanner console = new Scanner(System.in);
         while(!finished){
