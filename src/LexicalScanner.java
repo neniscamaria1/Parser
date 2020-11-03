@@ -9,14 +9,16 @@ public class LexicalScanner {
     private Set<String> tokensFromST;
     private FA fa_id;
     private FA fa_const_number;
+    private FA fa_const_string;
 
-    public LexicalScanner(FA fa_id,FA fa_const_number) {
+    public LexicalScanner(FA fa_id,FA fa_const_number, FA fa_const_string) {
         codes = new HashMap<>();
         PIF = new HashMap<>();
         tokensFromST = new HashSet<>();
         symbolTable = new SymbolTable();
         this.fa_id = fa_id;
         this.fa_const_number = fa_const_number;
+        this.fa_const_string = fa_const_string;
         initializeCodes();
     }
 
@@ -74,9 +76,8 @@ public class LexicalScanner {
                 addToPIF(codes.get("constant"), symbolTable.findElement(token));
                 System.out.println(token);
             }
-            else
-                if (isConstantString)
-                    addToPIF(codes.get("constant"), symbolTable.findElement(token));
+            if(fa_const_string.isSequenceAccepted(token))
+                addToPIF(codes.get("constant"), symbolTable.findElement(token));
 
         }
     }
