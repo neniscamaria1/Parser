@@ -63,7 +63,7 @@ public class LexicalScanner {
         printWriter.close();
     }
 
-    private void addTokenToTables(String token, boolean isConstantString) throws IOException {
+    private void addTokenToTables(String token) throws IOException {
         if (codes.containsKey(token)) {
             addToPIF(codes.get(token), -1);
         } else {
@@ -99,7 +99,7 @@ public class LexicalScanner {
                     quotesFound = !quotesFound;
                     if (!quotesFound) {//a constant string was found
                         constantString+="\"";
-                        addTokenToTables(constantString, true);
+                        addTokenToTables(constantString);
                         constantString = "\"";
                     }
                 }
@@ -124,7 +124,7 @@ public class LexicalScanner {
                     } else {
                         idOrConstFound = false;
                         if (!word.equals("")) {
-                            addTokenToTables(word, false);
+                            addTokenToTables(word);
                             word = "";
                         }
                         if(Character.toString(current).equals(",")){
@@ -132,7 +132,7 @@ public class LexicalScanner {
                                 number+=",";
                         }else {
                             if (!number.equals("")) {
-                                addTokenToTables(number, false);
+                                addTokenToTables(number);
                                 number = "";
                             }
                         }
@@ -149,7 +149,7 @@ public class LexicalScanner {
                                             else{
                                                 symbol+=current;
                                                 System.out.println(symbol);
-                                                addTokenToTables(symbol, false);
+                                                addTokenToTables(symbol);
                                                 symbol = "";
                                             }
                                         }
@@ -168,7 +168,7 @@ public class LexicalScanner {
                                                 else{
                                                     symbol+=current;
                                                     System.out.println(symbol);
-                                                    addTokenToTables(symbol, false);
+                                                    addTokenToTables(symbol);
                                                     symbol = "";
                                                 }
                                             }
@@ -179,7 +179,7 @@ public class LexicalScanner {
                                         if(i+2 < data.length()){
                                             if(Character.toString(data.charAt(i+1)).equals(".") && Character.toString(data.charAt(i+2)).equals(".")){
                                                 symbol="...";
-                                                addTokenToTables(symbol, false);
+                                                addTokenToTables(symbol);
                                                 symbol = "";
                                                 i+=2;
                                             }else{
@@ -202,7 +202,7 @@ public class LexicalScanner {
                                                     i++;
                                                 }
                                             }
-                                            addTokenToTables(symbol, false);
+                                            addTokenToTables(symbol);
                                             symbol = "";
                                         }
                                     }
