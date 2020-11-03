@@ -1,4 +1,5 @@
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -70,14 +71,19 @@ public class LexicalScanner {
             tokensFromST.add(token);
             symbolTable.add(token);
             if(fa_id.isSequenceAccepted(token)) { //is id
+                System.out.println("id " +token);
                 addToPIF(codes.get("identifier"), symbolTable.findElement(token));
-            }
-            if(fa_const_number.isSequenceAccepted(token)) {
-                addToPIF(codes.get("constant"), symbolTable.findElement(token));
-                System.out.println(token);
-            }
-            if(fa_const_string.isSequenceAccepted(token))
-                addToPIF(codes.get("constant"), symbolTable.findElement(token));
+            }else
+                if(fa_const_number.isSequenceAccepted(token)) { //is constant number
+                    System.out.println("no "+token);
+                    addToPIF(codes.get("constant"), symbolTable.findElement(token));
+                }else {
+                    System.out.println(token);
+                    if (fa_const_string.isSequenceAccepted(token)) { //is constant string
+                        System.out.println("string " + token);
+                        addToPIF(codes.get("constant"), symbolTable.findElement(token));
+                    }
+                }
 
         }
     }

@@ -28,7 +28,7 @@ public class FA {
             int lineNo = 0;
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                String[] dataSplit = data.split(" ");
+                String[] dataSplit = data.split(";");
                 if (lineNo == 0) {
                     Collections.addAll(setOfStates, dataSplit);
                 }
