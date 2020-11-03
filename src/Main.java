@@ -50,16 +50,16 @@ class Main {
                     finished=true;
                     break;
                 case 1:
-                    System.out.println(fa_id.getSetOfStates());
+                    System.out.println(fa_const_string.getSetOfStates());
                     break;
                 case 2:
-                    System.out.println(fa_id.getAlphabet());
+                    System.out.println(fa_const_string.getAlphabet());
                     break;
                 case 3:
-                    System.out.println(fa_id.getInitialState());
+                    System.out.println(fa_const_string.getInitialState());
                     break;
                 case 4:
-                    System.out.println(fa_id.getFinalStates());
+                    System.out.println(fa_const_string.getFinalStates());
                     break;
                 case 5:
                     fa_id.getTransitions().forEach(System.out::println);
@@ -68,7 +68,7 @@ class Main {
                     System.out.println("Sequence: ");
                     console.nextLine();
                     String sequence = console.nextLine();
-                    System.out.println(fa_id.isSequenceAccepted(sequence));
+                    System.out.println(fa_const_string.isSequenceAccepted(sequence));
                     break;
                 default:
                     System.out.println("Wrong command");
