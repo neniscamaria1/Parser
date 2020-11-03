@@ -16,6 +16,14 @@ public class LexicalScanner {
         initializeCodes();
     }
 
+    public Map<Integer, Integer> getPIF() {
+        return PIF;
+    }
+
+    public SymbolTable getSymbolTable() {
+        return symbolTable;
+    }
+
     private void initializeCodes() {
         try {
             File file = new File("token.in");
@@ -78,7 +86,8 @@ public class LexicalScanner {
         Scanner myReader = new Scanner(myObj);
         while (myReader.hasNextLine() && !errorFound) {
             String data = myReader.nextLine();
-            String word = "", number = "", symbol = "", constantString = "\"";
+            String word = "", number = "", symbol = "";
+            String constantString = "\"";
             boolean quotesFound = false, idOrConstFound = false;
             for (int i = 0; i < data.length(); i++) {
                 char current = data.charAt(i);

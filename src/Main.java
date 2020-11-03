@@ -1,5 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 class Main {
     private static void resetFiles() throws IOException {
@@ -13,6 +14,18 @@ class Main {
         pifFile.close();
         stFile.close();
     }
+
+    private static void showMenu(){
+        System.out.println("Choose one of the following:");
+        System.out.println("1.Show set of states");
+        System.out.println("2.Show alphabet");
+        System.out.println("3.Show initial state");
+        System.out.println("4.Show final state");
+        System.out.println("5.Show transitions");
+        System.out.println("6.Check sequence");
+        System.out.println("0.Exit");
+    }
+
     public static void main(String[] args){
         try {
             LexicalScanner lexicalScanner = new LexicalScanner();
@@ -20,6 +33,42 @@ class Main {
             lexicalScanner.scan("p1.txt");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        FA fa_id = new FA("FA_id.in");
+        boolean finished = false;
+        Scanner console = new Scanner(System.in);
+        while(!finished){
+            showMenu();
+            System.out.println(">>");
+            int choice = console.nextInt();
+            switch (choice){
+                case 0:
+                    finished=true;
+                    break;
+                case 1:
+                    System.out.println(fa_id.getSetOfStates());
+                    break;
+                case 2:
+                    System.out.println(fa_id.getAlphabet());
+                    break;
+                case 3:
+                    System.out.println(fa_id.getInitialState());
+                    break;
+                case 4:
+                    System.out.println(fa_id.getFinalStates());
+                    break;
+                case 5:
+                    fa_id.getTransitions().forEach(System.out::println);
+                    break;
+                case 6:
+                    System.out.println("Sequence: ");
+                    console.nextLine();
+                    String sequence = console.nextLine();
+                    System.out.println(fa_id.isSequenceAccepted(sequence));
+                    break;
+                default:
+                    System.out.println("Wrong command");
+            }
         }
     }
 }

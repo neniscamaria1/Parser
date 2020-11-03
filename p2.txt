@@ -5,7 +5,7 @@ main{
     display("a= ")_
     userInput(a)_
     truth isPrime=True_
-    loop(i; i<a/2 and isPrime; i=1){
+    loop(i; i<a/2 and isPrime; i+1){
         check(a%i == 0){
             isPrime=False_
         }
