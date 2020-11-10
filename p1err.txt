@@ -1,5 +1,5 @@
 main{
-    number a,5i=0_
+    number a,i=09_
     display("a= ")_
     userInput(a)_
     truth isPrime=True _

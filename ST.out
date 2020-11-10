@@ -1,11 +1,5 @@
 Data structure used: hash table with separate chaining.
-17 : a
-18 : b
-19 : c
-19 : "b= "
-10 : "c= "
-16 : max
-18 : "Biggest number is: "
-15 : 7
-8 : "a= "
-Lexically correct!
+97 : a
+105 : i
+145 : 09
+Lexical error found at line 2.

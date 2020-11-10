@@ -1,4 +1,5 @@
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -7,12 +8,18 @@ public class LexicalScanner {
     private Map<Integer, Integer> PIF;
     private SymbolTable symbolTable;
     private Set<String> tokensFromST;
+    private FA fa_id;
+    private FA fa_const_number;
+    private FA fa_const_string;
 
-    public LexicalScanner() {
+    public LexicalScanner(FA fa_id,FA fa_const_number, FA fa_const_string) {
         codes = new HashMap<>();
         PIF = new HashMap<>();
         tokensFromST = new HashSet<>();
         symbolTable = new SymbolTable();
+        this.fa_id = fa_id;
+        this.fa_const_number = fa_const_number;
+        this.fa_const_string = fa_const_string;
         initializeCodes();
     }
 
@@ -57,17 +64,28 @@ public class LexicalScanner {
         printWriter.close();
     }
 
-    private void addTokenToTables(String token, boolean isConstantString) throws IOException {
+    private boolean addTokenToTables(String token, int lineNo) throws IOException {
         if (codes.containsKey(token)) {
             addToPIF(codes.get(token), -1);
         } else {
             tokensFromST.add(token);
             symbolTable.add(token);
-            if (isConstantString)
-                addToPIF(codes.get("constant"), symbolTable.findElement(token));
-            else
+            if(fa_id.isSequenceAccepted(token)) { //is id
                 addToPIF(codes.get("identifier"), symbolTable.findElement(token));
+            }else
+                if(fa_const_number.isSequenceAccepted(token)) { //is constant number
+                    addToPIF(codes.get("constant"), symbolTable.findElement(token));
+                }else
+                    if (fa_const_string.isSequenceAccepted(token)) { //is constant string
+                        addToPIF(codes.get("constant"), symbolTable.findElement(token));
+                    }
+                    else{
+                        System.out.println("Error at line "+lineNo+". Invalid token "+token+".");
+                        return false;
+                    }
+
         }
+        return true;
     }
 
     public void scan(String fileName) throws IOException {
@@ -78,7 +96,8 @@ public class LexicalScanner {
         Scanner myReader = new Scanner(myObj);
         while (myReader.hasNextLine() && !errorFound) {
             String data = myReader.nextLine();
-            String word = "", number = "", symbol = "", constantString = "\"";
+            String word = "", number = "", symbol = "";
+            String constantString = "\"";
             boolean quotesFound = false, idOrConstFound = false;
             for (int i = 0; i < data.length(); i++) {
                 char current = data.charAt(i);
@@ -86,7 +105,8 @@ public class LexicalScanner {
                     quotesFound = !quotesFound;
                     if (!quotesFound) {//a constant string was found
                         constantString+="\"";
-                        addTokenToTables(constantString, true);
+                        if(!errorFound)
+                            errorFound = !addTokenToTables(constantString, lineNumber);
                         constantString = "\"";
                     }
                 }
@@ -111,7 +131,8 @@ public class LexicalScanner {
                     } else {
                         idOrConstFound = false;
                         if (!word.equals("")) {
-                            addTokenToTables(word, false);
+                            if(!errorFound)
+                                errorFound = !addTokenToTables(word, lineNumber);
                             word = "";
                         }
                         if(Character.toString(current).equals(",")){
@@ -119,7 +140,8 @@ public class LexicalScanner {
                                 number+=",";
                         }else {
                             if (!number.equals("")) {
-                                addTokenToTables(number, false);
+                                if(!errorFound)
+                                    errorFound = !addTokenToTables(number, lineNumber);
                                 number = "";
                             }
                         }
@@ -136,7 +158,8 @@ public class LexicalScanner {
                                             else{
                                                 symbol+=current;
                                                 System.out.println(symbol);
-                                                addTokenToTables(symbol, false);
+                                                if(!errorFound)
+                                                    errorFound = !addTokenToTables(symbol, lineNumber);
                                                 symbol = "";
                                             }
                                         }
@@ -155,7 +178,8 @@ public class LexicalScanner {
                                                 else{
                                                     symbol+=current;
                                                     System.out.println(symbol);
-                                                    addTokenToTables(symbol, false);
+                                                    if(!errorFound)
+                                                        errorFound = !addTokenToTables(symbol, lineNumber);
                                                     symbol = "";
                                                 }
                                             }
@@ -166,7 +190,8 @@ public class LexicalScanner {
                                         if(i+2 < data.length()){
                                             if(Character.toString(data.charAt(i+1)).equals(".") && Character.toString(data.charAt(i+2)).equals(".")){
                                                 symbol="...";
-                                                addTokenToTables(symbol, false);
+                                                if(!errorFound)
+                                                    errorFound = !addTokenToTables(symbol, lineNumber);
                                                 symbol = "";
                                                 i+=2;
                                             }else{
@@ -189,7 +214,8 @@ public class LexicalScanner {
                                                     i++;
                                                 }
                                             }
-                                            addTokenToTables(symbol, false);
+                                            if(!errorFound)
+                                                errorFound = !addTokenToTables(symbol, lineNumber);
                                             symbol = "";
                                         }
                                     }

@@ -16,7 +16,7 @@ public class SymbolTable {
 
     public SymbolTable() {
         elements = new ArrayList<>();
-        noBuckets = 5;
+        noBuckets = 200;
         size = 0;
         for(int i=0; i< noBuckets; i++)
             elements.add(null);
